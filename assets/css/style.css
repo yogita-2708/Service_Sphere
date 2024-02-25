@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.video-container {
+    position: relative;
+    height: 100vh; /* Set the height of the video container to match the viewport height */
+}
+
+.video2 {
+    width: 100%;
+    height: 100%; /* Make the video fill the entire video container */
+    object-fit: cover; /* Ensure the video covers the entire container */
+}
+
+.sec-one {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sec-one h1 {
+    font-weight: bold;
+}
+
+.sec-two img{
+    transition: transform 0.4s;
+}
+
+.sec-two img:hover{
+    transform: scale(1.05);
+}
