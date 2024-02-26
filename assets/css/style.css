@@ -33,10 +33,35 @@
     font-weight: bold;
 }
 
+body{
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
 .sec-two img{
     transition: transform 0.4s;
 }
 
 .sec-two img:hover{
+    transform: scale(1.05);
+}
+
+.sec-two h2{
+    transition: transform 0.4s;
+}
+
+.sec-two h2:hover{
+    transform: scale(1.05);
+}
+
+.img-2{
+    aspect-ratio:calc(16/9);
+    border-radius: 2rem;
+}
+
+.img-2{
+    transition: transform 0.4s;
+}
+
+.img-2:hover{
     transform: scale(1.05);
 }
