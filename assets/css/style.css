@@ -34,11 +34,12 @@
 }
 
 body{
-    background-color: rgba(128, 128, 128, 0.3);
+    background-color: rgba(128, 128, 128, 0.4);
 }
 
 .sec-two img{
     transition: transform 0.4s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .sec-two img:hover{
@@ -54,8 +55,9 @@ body{
 }
 
 .img-2{
-    aspect-ratio:calc(16/9);
-    border-radius: 2rem;
+    aspect-ratio:calc(10/4);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .img-2{
