@@ -8,7 +8,7 @@
     height: 100vh; /* Set the height of the video container to match the viewport height */
 }
 
-.video2 {
+.video2,.video1 {
     width: 100%;
     height: 100%; /* Make the video fill the entire video container */
     object-fit: cover; /* Ensure the video covers the entire container */
@@ -65,5 +65,14 @@ body{
 }
 
 .img-2:hover{
+    transform: scale(1.05);
+}
+
+.video1{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s;
+}
+
+.video1:hover{
     transform: scale(1.05);
 }
