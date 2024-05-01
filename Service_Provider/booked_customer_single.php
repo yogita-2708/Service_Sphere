@@ -4,13 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Details</title>
+    <title>Service Sphere</title>
     <link rel="stylesheet" href="assets/css/aos.css">
     <style>
         .wholeservicedetailscontainer {
             background-color: rgba(128, 128, 128, 0.4);
             background: rgba(0, 0, 0, 0.3);
             overflow-x: hidden;
+        }
+        .user-message {
+            color: black; 
+        }
+        .sp-message {
+            color: blue; 
+        }
+
+        #chatIcon {
+            position: fixed;
+            bottom: 10px;
+            right: 5px;
+            z-index: 999;
+        }
+
+        .chat-interface {
+            position: fixed;
+            bottom: 60px;
+            right: 5px;
+            width: 355px; 
+            display: none; 
+            z-index: 999; 
+        }
+        .chat-interface.show {
+            display: block; 
         }
     </style>
 </head>
@@ -48,7 +73,7 @@
                 </div>
             </div>
             <hr class="mt-5">
-            <div class="row p-4 mt-3 mx-auto" data-aos="zoom-in">
+            <div class="row p-4 mt-3 mx-auto">
 
                 <div class="col-md-6 bg-light rounded-start p-4">
                     <h3 class="text-start text-dark mb-4 mt-2 fw-bold">Address Details</h3>
@@ -75,21 +100,60 @@
             </div>
             </div>
 
+            <!-- Adding a chat icon button -->
+            <button id="chatIcon" class="btn bg-warning text-white shadow mb-5"><i class="bi bi-chat-left-text-fill fs-5"></i></button>
+
+                <!-- Chat interface -->
+                <div id="chatInterface" class="card mt-4 mb-5 chat-interface">
+                    <div class="card-header">Chat with user <i class="bi bi-chat-dots text-warning mx-1 fs-5"></i></div>
+                        <div class="card-footer">
+                            <form id="chatForm" class="mt-2 mb-2" action="../operations/message_insert_sp.php" method="post">
+                                <input type="text" id="messageInput" name="message" class="form-control d-inline mx-0 w-75 h-75" placeholder="Message...">
+                                <input type="text" name="service_id" value="<?php echo $service_id; ?>" hidden>
+                                <input type="text" name="user_id" value="<?php echo $row["user_id"]; ?>" hidden>
+                                <button type="submit" class="btn btn-sm text-white fs-6 bg-warning mb-2 mx-2" name="sub">SEND</button>
+                            </form>
+                        </div>
+
+                        <div class="container chat-body mt-2 mb-1">
+                            <?php
+                                $sp_id = $_SESSION['sp_id'];
+                                $sql1 = "SELECT * FROM messages WHERE sp_id = $sp_id";
+                                $result1 = $conn->query($sql1);
+                                if($result1->num_rows > 0){
+                                    while($row = $result1->fetch_assoc()){
+                                        $messageClass = ($row['status'] == 'sp') ? 'sp-message' : 'user-message';
+                                        ?>
+                                            <p class="ms-2 <?php echo $messageClass; ?>"><?php echo $row['m_content']; ?></p>
+                                        <?php
+                                    }
+                                }
+                            ?>
+                        </div>
+                        
+                    </div>
+                </div>
+
             <?php
-            }else{
-                echo "<h3 class='text-center text-dark'>No Current Booking Found</h3>";
-            }
-        }else{
-            echo "<h3 class='text-center text-dark'>No Current Booking Found</h3>";
-        }
-?>
+                }else{
+                    echo "<h3 class='text-center text-dark'>No Current Booking Found</h3>";
+                }
+                }else{
+                    echo "<h3 class='text-center text-dark'>No Current Booking Found</h3>";
+                }
+            ?>
         </div>
     </div>
-</div>
 
-        
 
-<script src="assets/js/aos.js"></script>
+
+<script>
+    document.getElementById('chatIcon').addEventListener('click', function() {
+        document.getElementById('chatInterface').classList.toggle('show');
+    });
+</script>
+
+<script src="../assets/js/aos.js"></script>
 <script>
     AOS.init({
         offset: 200,
