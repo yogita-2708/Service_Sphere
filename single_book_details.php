@@ -4,18 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Details</title>
+    <title>Service Sphere</title>
     <style>
         .wholeservicedetailscontainer {
             background-color: rgba(128, 128, 128, 0.4);
             background: rgba(0, 0, 0, 0.3);
             overflow-x: hidden;
         }
+        .user-message {
+            color: blue; 
+        }
+        .sp-message {
+            color: black; 
+        }
+        #chatIcon {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            z-index: 999;
+        }
+        #chatInterface {
+            position: fixed;
+            bottom: 60px;
+            right: 5px;
+            width: 355px; 
+            display: none; 
+            z-index: 999; 
+        }
+        #chatInterface.show {
+            display: block; 
+        }
     </style>
 </head>
 <body class="wholeservicedetailscontainer">
     <div class="container singleservicecontainer" data-aos="fade-up">
-        <div class="row mt-2 mb-4 mx-auto rounded-4 bg-transparent container-fluid p-4 position-relative justify-content-center">
+        <div class="row mx-auto rounded-4 bg-transparent container-fluid p-4 position-relative justify-content-center">
             <div class="row">
             <?php
                 require_once "db/dbconnect.php";
@@ -47,7 +70,7 @@
                 </div>
             </div>
             <hr class="mt-5">
-            <div class="row p-4 mt-3 mx-auto" data-aos="zoom-in">
+            <div class="row p-4 mt-3 mx-auto">
 
                 <div class="col-md-6 bg-light rounded-start p-4">
                     <h3 class="text-start text-dark mb-4 mt-2 fw-bold">Address Details</h3>
@@ -75,6 +98,39 @@
             </div>
             
 
+             <!-- Adding a chat icon button -->
+             <button id="chatIcon" class="btn bg-warning text-white shadow mb-5"><i class="bi bi-chat-left-text-fill fs-5"></i></button>
+
+                <!-- Chat interface -->
+                <div id="chatInterface" class="card mt-4 mb-5">
+                    <div class="card-header">You can chat with your service provider <i class="bi bi-chat-dots text-warning mx-1 fs-5"></i></div>
+                        <div class="card-footer">
+                            <form id="chatForm" class="mt-2 mb-2" action="operations\message_isert.php"  method="post">
+                                <input type="text" id="messageInput" name="message" class="form-control d-inline mx-0 w-75 h-75" placeholder="Message...">
+                                <input type="text" name="service_id" value="<?php echo $service_id; ?>" hidden>
+                                <input type="text" name="sp_id" value="<?php echo $row["sp_id"]; ?>" hidden>
+                                <button type="submit" class="btn btn-sm text-white fs-6 bg-warning mb-2 mx-2" name="sub">SEND</button>
+                            </form>
+                        </div>
+                        <div class="container mt-2 mb-1">
+                            <?php
+                                $user_id = $_SESSION['user_id'];
+                                $sql1 = "SELECT * FROM messages WHERE user_id = $user_id";
+                                $result1 = $conn->query($sql1);
+                                if($result1->num_rows > 0){
+                                    while($row = $result1->fetch_assoc()){
+                                        $messageClass = ($row['status'] == 'user') ? 'user-message' : 'sp-message';
+                                        ?>
+                                            <p class="ms-2 <?php echo $messageClass; ?>"><?php echo $row['m_content']; ?></p>
+                                        <?php
+                                    }
+                                }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            
+
             <?php
             }else{
                 echo "<h3 class='text-center text-dark'>No Current Booking Found</h3>";
@@ -87,7 +143,12 @@
     </div>
 </div>
 
-        
+
+<script>
+    document.getElementById('chatIcon').addEventListener('click', function() {
+        document.getElementById('chatInterface').classList.toggle('show');
+    });
+</script>
 <script>
     AOS.init({
         offset: 200,
