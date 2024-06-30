@@ -82,12 +82,9 @@
                 }
             ?>
             <hr>
-            <div class="form-group d-flex">
-                <input type="text" name="start_otp" class="form-control me-1" placeholder="Enter OTP">
-                <button type="button" class="btn bg-warning shadow-sm text-white" onclick="generateOTP()">OTP</button>
-            </div>
             
-            <div id="otp" class="mb-4"></div>
+            
+            <!-- <div id="otp" class="mb-4"></div> -->
             <div class="form-text text-dark fs-6 mb-2 fw-medium">Select a Time Slot</div>
             <div class="d-flex flex-wrap justify-content-between mb-4">
                 <div class="form-check">
@@ -142,37 +139,11 @@
                 <input class="d-none" type="text" name="service_id" value="<?php echo $id; ?>">
             </div>
             
-            <input type="submit" name="sub" value="BOOK NOW" class="from-control btn bg-warning text-white shadow mt-2">
+            <input type="submit" name="sub" value="BOOK NOW" class="from-control btn bg-warning text-white shadow mt-2" onclick="generateMail(event)">
         </form>
 
     </div>
     <script>
-        // Define a variable to keep track of whether OTP is generated
-        let otpGenerated = false;
-
-        function generateOTP(){
-            let otp = Math.floor(1000 + Math.random() * 9000);
-            let otp_div = document.getElementById('otp');
-            let p = `<p>Your four digit OTP: ${otp}, Do not share with anyone.</p>`;
-            otp_div.innerHTML = p;
-            // Set otpGenerated to true when OTP is generated
-            otpGenerated = true;
-        }
-
-        // Add event listener to the form submit event
-        document.getElementById('bookingForm').addEventListener('submit', function(event) {
-            // Check if OTP is generated
-            if (!otpGenerated) {
-                // If OTP is not generated, prevent form submission
-                event.preventDefault();
-                alert('Please generate OTP before submitting the form.');
-            } else {
-                // If OTP is generated, allow form submission
-                otpGenerated = false; // Reset otpGenerated for next submission
-            }
-        });
-
-
 
         $(document).ready(function () {
             $("form input[type=checkbox]").change(function () {
@@ -202,7 +173,97 @@
                 }
             })
         })
+
+        function generateMail(e) {
+            let id = <?php echo $id ?>;
+            let spid = <?php echo $spid?>;
+            let price = <?php print $row['s_price']*1.10 ?>;
+            let box = $("input[type=checkbox]:checked").val();
+            let slot_arr = box.split(".");
+            let val = slot_arr.join("-");
+
+            let requestData = "id=" + id + "&spid=" + spid + "&price=" + price + "&val=" + val;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "<?php echo $_SERVER['PHP_SELF']; ?>", false); // Set false for synchronous request
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(requestData);
+
+            // Check the response and handle form submission accordingly
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+                alert("Check Your Mail.");
+            } else {
+                e.preventDefault();
+                alert('Failed to send OTP. Please try again.');
+            }
+        }
+
+
     </script>
+
+
+
+    <?php
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
+        // Retrieve the OTP from the POST data
+            $id = $_POST['id']; // Retrieve the service ID from the form
+            $spid = $_POST['spid'];
+            $price = $_POST['price'];
+            $slot = $_POST['val'];
+            require_once "db/dbconnect.php";
+            $sql1 = "SELECT * FROM services WHERE service_id = $id";
+            $sql2 = "SELECT * FROM service_provider WHERE sp_id = $spid";
+            $res1 = $conn->query($sql1);
+            $res2 = $conn->query($sql2);
+            if($res1->num_rows > 0 && $res2->num_rows > 0){
+                $row1 = $res1->fetch_assoc();
+                $row2 = $res2->fetch_assoc();
+                $s_name = $row1['s_name'];
+                $sp_name = $row2['sp_name'];
+                $sp_phone = $row2['sp_phone'];
+                $sp_email = $row2['sp_email'];
+                $s_duration = $row1['s_duration'];
+            }
+            // Compose the email message with the OTP
+            $to = "bikashswain754231@gmail.com";
+            $subject = "Service Sphere: Booking Confirmation";
+            $message = "
+            
+            Hey Service Sphere User,<br><br>Your booking has successfully done!<br>
+            <strong>Service Name: </strong>$s_name<br>
+            <br>
+            <h2>Service Provider Details</h2>
+            <strong>Service Provider Name: </strong>$sp_name<br>
+            <strong>Phone: </strong>+91 $sp_phone<br>
+            <strong>Email: </strong>$sp_email<br><br>
+            <h2>Booking Details</h2>
+            <strong>Price: </strong>$price<br>
+            <strong>Slot: </strong>$slot<br>
+            <strong>Duration: </strong>$s_duration<br><br>
+            
+
+            Thank you for booking.
+            ";
+            $headers = [
+                "MIME-Version: 1.0",
+                "Content-type: text/html; charset=utf-8",
+                "From: bn965362@gmail.com"
+            ];
+            $headers = implode("\r\n",  $headers);
+            // Send the email
+            $check = mail($to, $subject, $message, $headers);
+    
+            if($check){
+                echo "<script>alert('Email sent successfully.');</script>";
+            } else {
+                echo "<script>alert('Email not sent.');</script>";
+            }
+        
+    }
+    ?>
+
 
 </body>
 </html>

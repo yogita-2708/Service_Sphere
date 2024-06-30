@@ -115,7 +115,7 @@
                     <h5 class="card-title text-dark mb-3 mt-1"><b><?php echo $ns['s_name']; ?></b></h5>
                     <p class="card-text text-dark" style="text-align: justify;"><?php echo $ns['s_desc']; ?></p>
                     <?php if(isset($_SESSION['accesslevel'])) { ?>
-                        <a href="service_details.php?service_id=<?php echo $ns['service_id']; ?>" class="btn mt-4 d-block shadow bg-warning text-white knowmorebtn">KNOW MORE</a>
+                        <a href="service_details_try.php?service_id=<?php echo $ns['service_id']; ?>" class="btn mt-4 d-block shadow bg-warning text-white knowmorebtn">KNOW MORE</a>
                     <?php } else { ?>
                         <button class="btn mt-4 d-block shadow bg-warning text-white knowmorebtn" onclick="bookServices()">KNOW MORE</button>
                     <?php } ?>

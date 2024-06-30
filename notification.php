@@ -30,8 +30,8 @@
 
         if (isset($_SESSION['accesslevel'])) {
             $access_level = $_SESSION['accesslevel'];
-
-            $qry = "SELECT notify_id, subject, message, date, time FROM notification INNER JOIN customer ON notification.user_id = customer.user_id WHERE accesslevel <= ? ORDER BY date DESC, time DESC";
+            $user_id = $_SESSION['user_id'];
+            $qry = "SELECT notify_id, subject, message, date, time FROM notification INNER JOIN customer ON notification.user_id = customer.user_id WHERE notification.user_id = $user_id AND accesslevel <= ? ORDER BY date DESC, time DESC";
             $stmt = $conn->prepare($qry);
             $stmt->bind_param("i", $access_level);
             $stmt->execute();

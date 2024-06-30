@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Sphere</title>
+    <title>Service Details</title>
     <style>
         .wholeservicedetailscontainer {
             background-color: rgba(128, 128, 128, 0.4);
@@ -48,7 +48,8 @@
                     header("location:booked_customer.php");
                 }
                 $user_id = $_SESSION['user_id'];
-                $qry = "SELECT * FROM booking NATURAL JOIN customer NATURAL JOIN services NATURAL JOIN address NATURAL JOIN service_service_provider NATURAL JOIN category WHERE user_id = $user_id AND service_id = $service_id";
+                // $qry = "SELECT * FROM booking NATURAL JOIN customer NATURAL JOIN services NATURAL JOIN address NATURAL JOIN service_service_provider NATURAL JOIN category WHERE user_id = $user_id AND service_id = $service_id";
+                $qry = "SELECT * FROM booking INNER JOIN customer ON booking.user_id=customer.user_id INNER JOIN services ON booking.service_id=services.service_id INNER JOIN address ON address.addr_id=booking.address_id INNER JOIN service_service_provider ON service_service_provider.service_id=booking.service_id INNER JOIN category ON category.cat_id=services.cat_id WHERE booking.service_id=$service_id AND booking.user_id=$user_id AND service_service_provider.sp_id=booking.sp_id";
                 $res = $conn->query($qry);
                 if($res){
                 if($res->num_rows > 0){
@@ -95,12 +96,53 @@
                     </div>
                 </div>
                 </div>
+
+                <?php
+
+                    if($row['end_otp']==0){
+                        ?>
+                            <div class="mt-3 px-4">
+                                <div class="row">
+
+                                    <form action="operations/review_insert.php" method="post">
+
+                                        <div class="mb-3">
+                                            <textarea name="comment" id="" placeholder="Enter Your Review..." class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="rateyo" id= "rating"
+                                        data-rateyo-rating="0"
+                                        data-rateyo-num-stars="5"
+                                        data-rateyo-score="3">
+                                        </div>
+
+                                        <span class='result d-none'>0</span>
+                                        <input type="hidden" name="rating" hidden>
+                                        <input type="text" name="sp_id" id="" value="<?php echo $row['sp_id']; ?>" hidden>
+                                        <input type="text" name="service_id" id="" value="<?php echo $row['service_id']; ?>" hidden>
+                                        <input type="text" name="user_id" id="" value="<?php echo $row['user_id']; ?>" hidden>
+                                        <input type="text" name="book_id" id="" value="<?php echo $row['book_id']; ?>" hidden>
+
+
+                                        <div><input type="submit" name="add" class="btn bg-warning text-white mt-3 px-4" value="ADD REVIEW"> </div>
+
+                                    </form>
+                                </div>
+                                <div class="my-4">
+                                <?php include_once "payscript.php"; ?>
+                            </div>
+                            </div>
+                            
+                        <?php
+                    }
+
+            ?>
+                
             </div>
             
 
              <!-- Adding a chat icon button -->
              <button id="chatIcon" class="btn bg-warning text-white shadow mb-5"><i class="bi bi-chat-left-text-fill fs-5"></i></button>
-
                 <!-- Chat interface -->
                 <div id="chatInterface" class="card mt-4 mb-5">
                     <div class="card-header">You can chat with your service provider <i class="bi bi-chat-dots text-warning mx-1 fs-5"></i></div>
@@ -129,7 +171,8 @@
                         </div>
                     </div>
                 </div>
-            
+                <hr class="my-3">
+
 
             <?php
             }else{
@@ -155,6 +198,32 @@
         duration: 1000,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+
+
+    $(function () {
+        $(".rateyo").rateYo().on("rateyo.change", function (e, data) {
+            var rating = data.rating;
+            $(this).parent().find('.score').text('score :'+ $(this).attr('data-rateyo-score'));
+            $(this).parent().find('.result').text('rating :'+ rating);
+            $(this).parent().find('input[name=rating]').val(rating); //add rating value to input field
+        });
+    });
+
+</script>
 </body>
 </html>
 <?php include_once "include/footer.php"; ?>
+
+
+
+
+
+
+
+
+
+
+

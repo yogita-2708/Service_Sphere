@@ -40,6 +40,10 @@ if(isset($_GET['service_id']) && !empty($_GET['service_id'])) {
     
     // Query to retrieve service details
     $qry_service = "SELECT services.*, category.cat_name FROM services INNER JOIN category ON services.cat_id = category.cat_id WHERE services.service_id = $service_id";
+
+    //Query to retrive sub-category
+    // $qry_sub_cat = "SELECT * FROM sub_category WHERE service_id=$service_id";
+    // $res_sub_cat = $conn->query($qry_sub_cat);
     
     // Query to retrieve service providers offering this service
     // $qry_providers = "SELECT service_provider.* FROM service_provider 
