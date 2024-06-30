@@ -34,7 +34,7 @@
 </head>
 <body>
     <div class="container mt-2 mt-md-5 mb-3">
-        <h2 class="text-center fw-bold text-warning">Address Page</h2>
+        <h2 class="text-center fw-bold text-dark">Address Page</h2>
         <form action="operations/address_table_insert.php" class="bg-white w p-2 p-md-5 mx-auto rounded shadow" method="post">
             <div class="mb-3 form-group">
                 <input type="text" name="name" class="form-control" placeholder="Enter Your Name">
@@ -57,7 +57,7 @@
 
             </div>
             
-            <input type="submit" name="sub" value="Click" class="from-control btn btn-warning">
+            <input type="submit" name="sub" value="ADD" class="from-control btn btn-warning">
         </form>
 
         <div class="shadow mt-3 rounded" id="map"></div>
