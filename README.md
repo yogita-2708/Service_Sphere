@@ -1,4 +1,4 @@
-# Service Sphere
+# Service Sphere - A Seamless Access to Expertise Anywhere
 
 ## Overview
 
@@ -43,7 +43,7 @@ Service Sphere is a web-based platform designed to streamline the booking proces
 
 ## Usage
 
-1. Open your web browser and navigate to `http://localhost/service-sphere`.
+1. Open your web browser and navigate to `http://localhost/Service_Sphere`.
 2. Register as a new user or log in with existing credentials.
 3. Browse through available services and make bookings as needed.
 4. Use the in-app chat to communicate with service providers.
@@ -51,17 +51,24 @@ Service Sphere is a web-based platform designed to streamline the booking proces
 
 ## Screenshots
 
-![Screenshot 1](screenshots/screenshot1.png)
-![Screenshot 2](screenshots/screenshot2.png)
-![Screenshot 3](screenshots/screenshot3.png)
+![Home Page](screenshots/homepage.jpg)
+![Login Page](screenshots/login.jpg)
+![SignUp Page](screenshots/signup.jpg)
+![After Login](screenshots/afterlogin.jpg)
+![Search Page](screenshots/search.jpg)
+![Book Appointment Page](screenshots/bookapp.jpg)
+![Booking Page](screenshots/booking.jpg)
+![Logout Page](screenshots/logout.jpg)
+![Admin Dashboard](screenshots/dashboard.jpg)
+![Database Tables](screenshots/database.jpg)
 
 ## Project Video
 
 Watch the full project video on LinkedIn: [Service Sphere Project Video](https://www.linkedin.com/posts/k-yogita_siliconuniversity-finalyearproject-webdevelopment-activity-7212766074868490240-WGGf?utm_source=share&utm_medium=member_desktop)
 
-## Team Members
+## Contributors
 
-- **Your Name** - [@yogita-2708](https://github.com/yogita-2708)
-- **Bikash Swain** - [@bikashswain98](https://github.com/bikashswain98)
-- **Stuti Biswal** - [@stutibiswal](https://github.com/stutibiswal)
+- **Kanreddy Yogita** - [@yogita-2708](https://github.com/yogita-2708)
+- **Bikash Swain** - [@bikashswain009](https://github.com/bikashswain009)
+- **Stuti Biswal** - [@stutibiswal01](https://github.com/stutibiswal01)
 
